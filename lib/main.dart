@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(ShoppingListApp());
@@ -20,16 +21,42 @@ class ListSelectionScreen extends StatefulWidget {
 }
 
 class _ListSelectionScreenState extends State<ListSelectionScreen> {
-  final List<String> _lists = [];
+  List<String> _lists = [];
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLists();
+  }
+
+  Future<void> _loadLists() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _lists = prefs.getStringList('shopping_lists') ?? [];
+    });
+  }
+
+  Future<void> _saveLists() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('shopping_lists', _lists);
+  }
 
   void _createNewList() {
     if (_controller.text.isNotEmpty) {
       setState(() {
         _lists.add(_controller.text);
         _controller.clear();
+        _saveLists();
       });
     }
+  }
+
+  void _removeList(int index) {
+    setState(() {
+      _lists.removeAt(index); // Remove a lista
+      _saveLists(); // Salva novamente a lista atualizada
+    });
   }
 
   @override
@@ -63,6 +90,10 @@ class _ListSelectionScreenState extends State<ListSelectionScreen> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(_lists[index]),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _removeList(index), // Exclui a lista
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -90,14 +121,33 @@ class ShoppingListScreen extends StatefulWidget {
 }
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
-  final List<String> _items = [];
+  List<String> _items = [];
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _items = prefs.getStringList(widget.listName) ?? [];
+    });
+  }
+
+  Future<void> _saveItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(widget.listName, _items);
+  }
 
   void _addItem() {
     if (_controller.text.isNotEmpty) {
       setState(() {
         _items.add(_controller.text);
         _controller.clear();
+        _saveItems();
       });
     }
   }
@@ -105,6 +155,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   void _removeItem(int index) {
     setState(() {
       _items.removeAt(index);
+      _saveItems();
     });
   }
 
