@@ -6,6 +6,8 @@ void main() {
 }
 
 class ShoppingListApp extends StatelessWidget {
+  const ShoppingListApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,6 +18,8 @@ class ShoppingListApp extends StatelessWidget {
 }
 
 class ListSelectionScreen extends StatefulWidget {
+  const ListSelectionScreen({super.key});
+
   @override
   _ListSelectionScreenState createState() => _ListSelectionScreenState();
 }
