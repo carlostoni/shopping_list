@@ -1,4 +1,4 @@
-# Define a linguagem principal como Dart
+ # Define a linguagem principal como Dart
 *.dart linguist-language=Dart
 
 # Exclui arquivos irrelevantes do cálculo da linguagem
@@ -6,3 +6,4 @@
 *.yaml linguist-detectable=false
 *.json linguist-detectable=false
 *.lock linguist-detectable=false
+*.c++ linguist-detectable=false
