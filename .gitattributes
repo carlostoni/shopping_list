@@ -1,9 +1,9 @@
- # Define a linguagem principal como Dart
+# Forçar o GitHub a reconhecer Dart como a linguagem principal
 *.dart linguist-language=Dart
 
-# Exclui arquivos irrelevantes do cálculo da linguagem
-*.md linguist-documentation
+# Excluir arquivos de configuração do cálculo da linguagem
 *.yaml linguist-detectable=false
 *.json linguist-detectable=false
 *.lock linguist-detectable=false
 *.c++ linguist-detectable=false
+*.md linguist-documentation
